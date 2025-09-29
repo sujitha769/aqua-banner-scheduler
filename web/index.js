@@ -300,42 +300,41 @@ app.get("/apps/banner-api/active", async (req, res) => {
     const active = banners.filter((b) => {
       const start = b.startDate ? new Date(b.startDate) : null;
       const end = b.endDate ? new Date(b.endDate) : null;
-      
-      // Reset time for dates to compare only date part
+
       if (start) start.setHours(0, 0, 0, 0);
       if (end) end.setHours(23, 59, 59, 999);
-      
+
       return start && start <= today && (!end || end >= today);
     });
 
-    // Return JSON response
     res.status(200).json({
       success: true,
-      banners: active.map(b => ({
+      banners: active.map((b) => ({
         id: b._id,
         title: b.title,
         alt: b.alt,
         url: b.url,
         startDate: b.startDate,
-        endDate: b.endDate
+        endDate: b.endDate,
       })),
-      count: active.length
+      count: active.length,
     });
   } catch (err) {
     console.error("Active banners API error:", err);
-    res.status(500).json({ 
-      success: false, 
+    res.status(500).json({
+      success: false,
       error: "Error loading banners",
       banners: [],
-      count: 0
+      count: 0,
     });
   }
 });
 
-// Serve frontend
+// ✅ Serve frontend (safe catch-all)
 app.use(shopify.cspHeaders());
 app.use(serveStatic(STATIC_PATH, { index: false }));
-app.get("/*", shopify.ensureInstalledOnShop(), (_req, res) => {
+app.use(shopify.ensureInstalledOnShop());
+app.use((req, res) => {
   res
     .status(200)
     .set("Content-Type", "text/html")
