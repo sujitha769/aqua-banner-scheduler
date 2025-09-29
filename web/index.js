@@ -335,7 +335,7 @@ app.get("/apps/banner-api/active", async (req, res) => {
 // Serve frontend
 app.use(shopify.cspHeaders());
 app.use(serveStatic(STATIC_PATH, { index: false }));
-app.use("/*", shopify.ensureInstalledOnShop(), (_req, res) => {
+app.use("*", shopify.ensureInstalledOnShop(), (_req, res) => {
   res
     .status(200)
     .set("Content-Type", "text/html")
