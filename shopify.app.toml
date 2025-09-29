@@ -22,6 +22,6 @@ redirect_urls = [
 
 # ✅ App Proxy Configuration for Banner API
 [app_proxy]
-url = "https://cabinet-obligation-cam-clara.trycloudflare.com/apps/banner-api"
+url = "https://aqua-banner-scheduler-1.onrender.com/apps/banner-api"
 subpath = "banner-api"
 prefix = "apps"
