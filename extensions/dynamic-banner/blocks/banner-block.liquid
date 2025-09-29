@@ -1,0 +1,145 @@
+{% comment %}
+  Dynamic Banner Block - Displays scheduled banners
+{% endcomment %}
+
+<div class="dynamic-banner-wrapper" data-banner-block="{{ block.id }}">
+  <div id="dynamic-banner-container-{{ block.id }}" class="dynamic-banner-container">
+    <div class="banner-loading">Loading banners...</div>
+  </div>
+</div>
+
+<style>
+  .dynamic-banner-wrapper {
+    width: 100%;
+    margin: 20px auto;
+    max-width: 1200px;
+  }
+
+  .dynamic-banner-container {
+    width: 100%;
+  }
+
+  .banner-item {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 15px;
+    border-radius: 8px;
+  }
+
+  .banner-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  .banner-loading {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-size: 14px;
+  }
+
+  .banner-error {
+    text-align: center;
+    padding: 20px;
+    color: #d9534f;
+    background: #fee;
+    border-radius: 4px;
+  }
+
+  .no-banners {
+    display: none;
+  }
+</style>
+
+<script>
+  (function() {
+    const blockId = '{{ block.id }}';
+    const container = document.getElementById(`dynamic-banner-container-${blockId}`);
+    
+    // Use relative URL for app proxy
+    const apiEndpoint = '/apps/banner-api/active';
+
+    async function fetchActiveBanners() {
+      try {
+        console.log('Fetching banners from:', apiEndpoint);
+        
+        const response = await fetch(apiEndpoint, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        console.log('Response status:', response.status);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Banner data received:', data);
+
+        const banners = data.banners || [];
+
+        // Clear container
+        container.innerHTML = '';
+
+        if (banners.length === 0) {
+          container.innerHTML = '<div class="no-banners"></div>';
+          return;
+        }
+
+        // Render each banner
+        banners.forEach((banner, index) => {
+          const bannerDiv = document.createElement('div');
+          bannerDiv.className = 'banner-item';
+          bannerDiv.setAttribute('data-banner-id', banner.id);
+          
+          const img = document.createElement('img');
+          img.src = banner.url;
+          img.alt = banner.alt || banner.title || 'Banner';
+          img.loading = index === 0 ? 'eager' : 'lazy';
+          
+          bannerDiv.appendChild(img);
+          container.appendChild(bannerDiv);
+        });
+
+        console.log(`Successfully rendered ${banners.length} banner(s)`);
+
+      } catch (error) {
+        console.error('Error fetching banners:', error);
+        container.innerHTML = `
+          <div class="banner-error">
+            Unable to load banners. Please try refreshing the page.
+          </div>
+        `;
+      }
+    }
+
+    // Initialize
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', fetchActiveBanners);
+    } else {
+      fetchActiveBanners();
+    }
+
+    // Refresh banners every 5 minutes (optional)
+    setInterval(fetchActiveBanners, 5 * 60 * 1000);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Dynamic Banner",
+  "target": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Displays scheduled banners based on start and end dates. Manage banners from the app dashboard."
+    }
+  ]
+}
+{% endschema %}

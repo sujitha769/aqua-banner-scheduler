@@ -1,0 +1,28 @@
+{
+  "name": "aqua",
+  "version": "1.0.0",
+  "main": "web/index.js",
+  "license": "UNLICENSED",
+  "scripts": {
+    "shopify": "shopify",
+    "build": "shopify app build",
+    "dev": "shopify app dev",
+    "info": "shopify app info",
+    "generate": "shopify app generate",
+    "deploy": "shopify app deploy"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "form-data": "^4.0.4",
+    "mongoose": "^8.18.2",
+    "multer": "^2.0.2",
+    "node-fetch": "^3.3.2"
+  },
+  "author": "sujit",
+  "private": true,
+  "workspaces": [
+    "extensions/*",
+    "web",
+    "web/frontend"
+  ]
+}

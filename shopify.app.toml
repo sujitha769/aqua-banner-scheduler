@@ -1,0 +1,27 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "dc9d72a55e911cdb56be51fd4315922b"
+name = "aqua"
+application_url = "https://cabinet-obligation-cam-clara.trycloudflare.com"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+
+[webhooks]
+api_version = "2025-10"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_products,write_files"
+
+[auth]
+redirect_urls = [
+  "https://cabinet-obligation-cam-clara.trycloudflare.com/api/auth"
+]
+
+# ✅ App Proxy Configuration for Banner API
+[app_proxy]
+url = "https://cabinet-obligation-cam-clara.trycloudflare.com/apps/banner-api"
+subpath = "banner-api"
+prefix = "apps"

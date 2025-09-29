@@ -1,0 +1,9 @@
+name = "dynamic-banner"
+
+uid = "91bd8cf6-b9a8-692c-db3f-eaafcd24dd57c2590c96"
+
+type = "theme"
+
+[extension]
+name = "Dynamic Banner"
+handle = "dynamic-banner"
