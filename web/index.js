@@ -44,7 +44,7 @@ app.post(
 );
 
 // Middleware
-app.use("/api/*", shopify.validateAuthenticatedSession());
+app.use("/api", shopify.validateAuthenticatedSession());
 app.use(express.json());
 
 // 🚀 Banner Upload API
