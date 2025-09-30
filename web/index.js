@@ -289,7 +289,7 @@ app.get("/apps/banner", async (req, res) => {
 });
 
 // ✅ NEW API ROUTE FOR THEME EXTENSION (JSON Response)
-app.get("/apps/banner-api/active*", async (req, res) => {
+app.get("/apps/banner-api/active", async (req, res) => {
   try {
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Reset to start of day for accurate comparison
